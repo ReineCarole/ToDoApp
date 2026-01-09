@@ -1,20 +1,18 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update # Creates/updates tables automatically
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
 
   datasource:
-    # Local development (optional fallback - uses H2 if no env vars)
-    url: ${DATABASE_URL:jdbc:h2:mem:tododb}
-    username: ${DATABASE_USERNAME:sa}
-    password: ${DATABASE_PASSWORD:}
-    driver-class-name: ${DATABASE_DRIVER:org.h2.Driver}
-
-# Production profile - activated when deployed (Railway, Render, etc.)
+    # This will use env vars if present (production), fallback to H2 for local dev
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:tododb}
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.h2.Driver}
 ---
 spring:
   config:
@@ -22,9 +20,6 @@ spring:
       on-profile: prod
 
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
-    username: ${PGUSER}
-    password: ${PGPASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
