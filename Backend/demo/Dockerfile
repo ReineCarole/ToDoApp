@@ -15,8 +15,16 @@ RUN ./gradlew bootJar --no-daemon -x test
 
 # Runtime stage 
 FROM eclipse-temurin:21-jdk
+
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 WORKDIR /app
+
 COPY --from=build /home/gradle/projects/demo/build/libs/*.jar app.jar
+
+RUN chown appuser:appgroup app.jar
+
+USER appuser
 
 EXPOSE 8080
 
