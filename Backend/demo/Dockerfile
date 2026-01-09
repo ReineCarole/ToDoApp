@@ -1,14 +1,14 @@
 # Use official Gradle image with JDK 21 to build the app
 FROM gradle:8.5-jdk21 AS build
-COPY --chown=gradle:gradle . /home/gradle/src
+COPY . /demo/src
 
-WORKDIR /home/gradle/src
-RUN gradle build --no-daemon -x test
+WORKDIR /demo/src
+RUN gradle bootJar --no-daemon -x test
 
 # Runtime stage 
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
-COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
+COPY --from=build /demo/src/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
