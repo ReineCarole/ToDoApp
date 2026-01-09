@@ -1,17 +1,13 @@
 # Use official Gradle image with JDK 21 to build the app
 FROM gradle:8.5-jdk21 AS build
 
-WORKDIR /home/gradle/project
+WORKDIR /app
 
 COPY gradlew .
 COPY gradle ./gradle
-COPY build.gradle.kts .
-COPY settings.gradle.kts .
+COPY build.gradle.kts settings.gradle.kts ./
 
-RUN chmod +x ./gradlew
-RUN ./gradlew build --no-daemon -x test || return 0
-
-COPY src ./src
+COPY src src
 
 RUN ./gradlew bootJar --no-daemon -x test
 
@@ -20,7 +16,7 @@ FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY --from=build /home/gradle/project/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
