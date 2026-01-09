@@ -6,7 +6,7 @@ WORKDIR /home/gradle/src
 RUN gradle build --no-daemon -x test
 
 # Runtime stage 
-FROM eclipse-temurin:21-jdk-slim
+FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 
