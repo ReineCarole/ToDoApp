@@ -1,7 +1,7 @@
 # Use official Gradle image with JDK 21 to build the app
 FROM gradle:8.5-jdk21 AS build
 
-WORKDIR /home/gradle/projects/demo
+WORKDIR /home/gradle/project
 
 COPY gradlew .
 COPY gradle ./gradle
@@ -20,7 +20,7 @@ FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY --from=build /home/gradle/projects/demo/build/libs/*.jar app.jar
+COPY --from=build /home/gradle/project/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
